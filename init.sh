@@ -5,7 +5,7 @@ HOMEBREW_PATH=/opt/homebrew/bin/brew
 if [ ! -f $HOMEBREW_PATH ]
 then
     echo "Installing homebrew"
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 echo "Updating homebrew"
@@ -111,6 +111,8 @@ echo "Installing neovim"
 brew install neovim
 
 echo "Running neovim setup"
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 nvim --headless +PlugInstall +qa
 nvim --headless +LspInstall +qa
 
