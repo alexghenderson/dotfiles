@@ -16,11 +16,51 @@ OH_MY_ZSH_PATH=$HOME/.oh-my-zsh
 if [ ! -d $OH_MY_ZSH_PATH ]
 then
     echo "Installing Oh My Zsh"
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    RUNZSH=no sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 # Root directory of dotfiles
 DOTFILES_ROOT=$(cd $(dirname "$0") && pwd)
+
+# Profile Setup
+PROFILE_PATH=$HOME/.profile
+PROFILE_PRIVATE_PATH=$HOME/.profile-private
+if [ -f $PROFILE_PATH ]
+then
+    echo ".profile exists; moving to $PROFILE_PATH.old"
+    mv $PROFILE_PATH $PROFILE_PATH.old
+fi
+echo "Symlinking $PROFILE_PATH => $DOTFILES_ROOT/profile/profile"
+ln -s $DOTFILES_ROOT/profile/profile $PROFILE_PATH
+
+if [ ! -f $PROFILE_PRIVATE_PATH ]
+then
+    echo "Creating empty .profile-private file"
+    touch $PROFILE_PRIVATE_PATH
+fi
+
+source $HOME/.profile
+
+# ZSH Setup
+ZPROFILE_PATH=$HOME/.zprofile
+ZSHRC_PATH=$HOME/.zshrc
+if [ -f $ZPROIFLE_PATH ]
+then
+    echo "zprofile already exists; renaming to $ZPROFILE_PATH.old"
+    mv $ZPROFILE_PATH $ZPROFILE_PATH.old
+fi
+
+if [ -f $ZSHRC_PATH ]
+then
+    echo "zshrc already exists; renaming to $ZSHRC_PATH.old"
+    mv $ZSHRC_PATH $ZSHRC_PATH.old
+fi
+
+echo "Creating symlink from $ZPROFILE_PATH => $DOTFILES_ROOT/zsh/zprofile"
+ln -s $DOTFILES_ROOT/zsh/zprofile $ZPROFILE_PATH
+
+echo "Creating symlink from $ZSHRC_PATH => $DOTFILES_ROOT/zsh/zshrc"
+ln -s $DOTFILES_ROOT/zsh/zshrc $ZSHRC_PATH
 
 
 
@@ -51,44 +91,6 @@ fi
 
 echo "Installing node/npm lts"
 n lts
-
-# Profile Setup
-PROFILE_PATH=$HOME/.profile
-PROFILE_PRIVATE_PATH=$HOME/.profile-private
-if [ -f $PROFILE_PATH ]
-then
-    echo ".profile exists; moving to $PROFILE_PATH.old"
-    mv $PROFILE_PATH $PROFILE_PATH.old
-fi
-echo "Symlinking $PROFILE_PATH => $DOTFILES_ROOT/profile/profile"
-ln -s $DOTFILES_ROOT/profile/profile $PROFILE_PATH
-
-if [ ! -f $PROFILE_PRIVATE_PATH ]
-then
-    echo "Creating empty .profile-private file"
-    touch $PROFILE_PRIVATE_PATH
-fi
-
-# ZSH Setup
-ZPROFILE_PATH=$HOME/.zprofile
-ZSHRC_PATH=$HOME/.zshrc
-if [ -f $ZPROIFLE_PATH ]
-then
-    echo "zprofile already exists; renaming to $ZPROFILE_PATH.old"
-    mv $ZPROFILE_PATH $ZPROFILE_PATH.old
-fi
-
-if [ -f $ZSHRC_PATH ]
-then
-    echo "zshrc already exists; renaming to $ZSHRC_PATH.old"
-    mv $ZSHRC_PATH $ZSHRC_PATH.old
-fi
-
-echo "Creating symlink from $ZPROFILE_PATH => $DOTFILES_ROOT/zsh/zprofile"
-ln -s $DOTFILES_ROOT/zsh/zprofile $ZPROFILE_PATH
-
-echo "Creating symlink from $ZSHRC_PATH => $DOTFILES_ROOT/zsh/zshrc"
-ln -s $DOTFILES_ROOT/zsh/zshrc $ZSHRC_PATH
 
 # NVIM Config Setup
 NVIM_FOLDER="nvim"
