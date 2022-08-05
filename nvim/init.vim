@@ -11,6 +11,9 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
+Plug 'ThePrimeagen/harpoon'
+Plug 'folke/tokyonight.nvim'
 
 call plug#end()
 
+colorscheme tokyonight
